@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Text;
 
 
-
 public class DruidConnection : IDisposable
 {
     private SqliteConnection _connection;
@@ -43,7 +42,7 @@ public class DruidConnection : IDisposable
     public SqliteCommand CreateCommand(string sql) => new SqliteCommand(sql, _connection);
 }
 
-// simple crud library with reflection
+
 public static class DruidCRUD
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
