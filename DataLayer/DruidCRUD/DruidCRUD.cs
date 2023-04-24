@@ -670,4 +670,66 @@ public static class DruidCRUD
 
         command.ExecuteNonQuery();
     }
+
+    public static void Update(this DruidConnection connection, object item)
+    {
+        var type = item.GetType();
+        var tableName = GetTableName(type);
+
+        var primaryKeyProperty = GetPrimaryKeyProperty(type);
+        var primaryKeyValue = primaryKeyProperty.GetValue(item);
+
+        StringBuilder sb = new StringBuilder();
+        sb.Append($"UPDATE {tableName} SET ");
+
+        var properties = type.GetProperties();
+        foreach(var property in properties)
+        {
+            if (IsIgnored(property))
+                continue;
+            
+            if (IsList(property))
+                continue;
+            
+            if (IsPrimaryKey(property))
+                continue;
+            
+            if (IsForeignColumn(property))
+                continue;
+            
+            if (IsEnum(property))
+                continue;
+            
+            sb.Append($"{GetColumnName(property)} = @{GetColumnName(property)}, ");
+        }
+
+        sb.Remove(sb.Length - 2, 2);
+        sb.Append($" WHERE {GetColumnName(primaryKeyProperty)} = @Id;");
+
+        var command = connection.CreateCommand(sb.ToString());
+        command.Parameters.AddWithValue("@Id", primaryKeyValue);
+
+        foreach(var property in properties)
+        {
+            if (IsIgnored(property))
+                continue;
+            
+            if (IsList(property))
+                continue;
+            
+            if (IsPrimaryKey(property))
+                continue;
+            
+            if (IsForeignColumn(property))
+                continue;
+            
+            if (IsEnum(property))
+                continue;
+            
+            var value = property.GetValue(item);
+            command.Parameters.AddWithValue($"@{GetColumnName(property)}", value);
+        }
+
+        command.ExecuteNonQuery();
+    }
 }
