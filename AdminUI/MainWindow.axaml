@@ -4,6 +4,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="AdminUI.MainWindow"
-        Title="AdminUI">
-    Welcome to Avalonia!
+        Title="Login">
+
+    <!-- <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="35"/>
+
+        </Grid.RowDefinitions>
+
+        <DataGrid Items="{Binding Artists}"  AutoGenerateColumns="false">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
+                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
+                <DataGridTextColumn Header="Bio" Binding="{Binding Bio}" />
+            </DataGrid.Columns>
+
+        </DataGrid>
+        </Grid> -->
+
+
+
 </Window>
