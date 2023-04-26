@@ -1,7 +1,7 @@
 namespace DataLayer.Models;
 
 [DruidCRUD.TableName("reviews")]
-public class Review
+public class Review : IModel
 {
     [DruidCRUD.PrimaryKey]
     public int? Id { get; set; }
@@ -30,5 +30,14 @@ public class Review
         Comment = comment;
         Rating = rating;
         Date = date;
+    }
+
+    public Review()
+    {
+        Artwork = new Artwork();
+        User = new User();
+        Comment = String.Empty;
+        Rating = 0;
+        Date = DateTime.Now;
     }
 }

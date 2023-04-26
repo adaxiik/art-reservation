@@ -1,7 +1,7 @@
 ﻿namespace DataLayer.Models;
 
 [DruidCRUD.TableName("artworks")]
-public class Artwork
+public class Artwork : IModel
 {
     [DruidCRUD.PrimaryKey]
     public int? Id { get; set; }
@@ -71,6 +71,6 @@ public class Artwork
     
     public override string ToString()
     {
-        return $"{Title} by {Artist}";
+        return $"{Title} by {Artist} - {Type}";
     }
 }

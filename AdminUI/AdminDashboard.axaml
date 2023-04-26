@@ -1,0 +1,90 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
+        x:Class="AdminUI.AdminDashboard"
+        Title="Admin Dashboard"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Top"
+                        Orientation="Vertical"
+                        VerticalAlignment="Top">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <TextBlock Text="Logged in as: " />
+                    <TextBlock Text="Adam "
+                               Name="LoggedAsName_" />
+                </StackPanel>
+                <Button Content="Logout"
+                        Name="LogoutButton"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Right"
+                        Click="LogoutCommand" />
+            </StackPanel>
+        
+
+        <Grid DockPanel.Dock="Top" Margin="10" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Button Content="Manage users"
+                Grid.Row="0"
+                Grid.Column="0"
+                Name="ManageUsersButton" 
+                Margin="10"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                FontSize="16" 
+                Click="ManageUsersCommand"/>
+        <Button Content="Manage artists"
+                Grid.Row="0"
+                Grid.Column="1"
+                Name="ManageArtistsButton" 
+                Margin="10"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                FontSize="16" 
+                Click="ManageArtistsCommand"/>
+        <Button Content="Manage artworks"
+                Grid.Row="0"
+                Grid.Column="2"
+                Name="ManageArtworksButton" 
+                Margin="10"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                FontSize="16" 
+                Click="ManageArtworksCommand"/>
+        <Button Content="Manage reservations"
+                Grid.Row="1"
+                Grid.Column="0"
+                Name="ManageReservationsButton" 
+                Margin="10"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                FontSize="16" 
+                Click="ManageReservationsCommand"/>
+        <Button Content="Manage reviews"
+                Grid.Row="1"
+                Grid.Column="1"
+                Name="ManageReviewsButton" 
+                Margin="10"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                FontSize="16" 
+                Click="ManageReviewsCommand"/>
+
+    </Grid>
+    </DockPanel>
+    </Grid>
+</Window>

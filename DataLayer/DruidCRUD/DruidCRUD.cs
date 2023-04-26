@@ -23,9 +23,21 @@ public class DruidConnection : IDisposable
 
     public void ExecuteNonQuery(string sql)
     {
-        using (var command = new SqliteCommand(sql, _connection))
+        using(var transaction = _connection.BeginTransaction())
         {
-            command.ExecuteNonQuery();
+            try
+            {
+                using (var command = new SqliteCommand(sql, _connection, transaction))
+                {
+                    command.ExecuteNonQuery();
+                }
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw new Exception("Error executing sql: " + sql, e);
+            }
         }
     }
 
@@ -120,7 +132,7 @@ public static class DruidCRUD
                        .Any();
     }
 
-    static bool IsPrimaryKey(PropertyInfo property)
+    public static bool IsPrimaryKey(PropertyInfo property)
     {
         return property.GetCustomAttributes(false)
                        .OfType<PrimaryKeyAttribute>()
@@ -144,7 +156,7 @@ public static class DruidCRUD
                        .Any();
     }
 
-    static bool IsEnum(PropertyInfo property)
+    public static bool IsEnum(PropertyInfo property)
     {
         return property.PropertyType.IsEnum;
     }
@@ -587,6 +599,92 @@ public static class DruidCRUD
         return items;
     }
 
+    public static List<object> GetAll(this DruidConnection connection, Type type)
+    {
+        var tableName = GetTableName(type);
+
+        StringBuilder sb = new StringBuilder();
+        sb.Append($"SELECT * FROM {tableName};");
+
+        var command = connection.CreateCommand(sb.ToString());
+
+        using var reader = command.ExecuteReader();
+        List<object> items = new List<object>();
+
+        while (reader.Read())
+        {
+            var item = Activator.CreateInstance(type);
+            foreach(var property in type.GetProperties())
+            {
+                if (IsIgnored(property))
+                    continue;
+                
+                if (IsList(property))
+                    continue;
+                
+                if (IsForeignColumn(property))
+                {
+                    var foreignKeyProperty = GetPrimaryKeyProperty(property.PropertyType);
+                    var foreignKeyValue = reader.GetInt32(reader.GetOrdinal($"{GetForeignKeyName(property)}"));
+
+                    MethodInfo method = typeof(DruidCRUD).GetMethod("GetById")!;
+                    MethodInfo generic = method.MakeGenericMethod(property.PropertyType);
+                    var foreignItem = generic.Invoke(null, new object[] { connection, foreignKeyValue });
+
+                    property.SetValue(item, foreignItem);
+                    continue;
+                }
+
+                if (IsEnum(property))
+                {
+                    var enumValue = reader.GetString(reader.GetOrdinal(GetColumnName(property)));
+                    var enumType = property.PropertyType;
+                    var enumValueObj = Enum.Parse(enumType, enumValue);
+                    property.SetValue(item, enumValueObj);
+                    continue;
+                }
+
+                var value = reader.GetValue(reader.GetOrdinal(GetColumnName(property)));
+                if(IsNullable(property))
+                    value = Convert.ChangeType(value, Nullable.GetUnderlyingType(property.PropertyType)!);
+                else
+                    value = Convert.ChangeType(value, property.PropertyType);
+                property.SetValue(item, value);
+            }
+
+            items.Add(item!);
+        }
+
+        return items;
+    }
+
+    public static bool AreSame(object obj1, object obj2)
+    {
+        if (obj1.GetType() != obj2.GetType())
+            return false;
+
+        var primaryKey1 = GetPrimaryKeyProperty(obj1.GetType());
+        var primaryKey2 = GetPrimaryKeyProperty(obj2.GetType());
+
+        var primaryKeyValue1 = primaryKey1.GetValue(obj1);
+        var primaryKeyValue2 = primaryKey2.GetValue(obj2);
+
+        return primaryKeyValue1!.Equals(primaryKeyValue2);
+    }
+
+    public static bool HasId(object obj)
+    {
+        var primaryKey = GetPrimaryKeyProperty(obj.GetType());
+        var primaryKeyValue = primaryKey.GetValue(obj);
+
+        if (primaryKeyValue == null)
+            return false;
+
+        return true;
+    }
+    
+
+
     public static List<T> GetByProperty<T>(this DruidConnection connection, string propertyName, object value)
     {
         var type = typeof(T);
@@ -694,10 +792,18 @@ public static class DruidCRUD
                 continue;
             
             if (IsForeignColumn(property))
+            {
+                Update(connection, property.GetValue(item)!);
+                sb.Append($"{GetForeignKeyName(property)} = @{GetForeignKeyName(property)}, ");
                 continue;
+            }
             
             if (IsEnum(property))
+            {
+                var enumValue = property.GetValue(item);
+                sb.Append($"{GetColumnName(property)} = '{enumValue}', ");
                 continue;
+            }
             
             sb.Append($"{GetColumnName(property)} = @{GetColumnName(property)}, ");
         }
@@ -706,6 +812,7 @@ public static class DruidCRUD
         sb.Append($" WHERE {GetColumnName(primaryKeyProperty)} = @Id;");
 
         var command = connection.CreateCommand(sb.ToString());
+
         command.Parameters.AddWithValue("@Id", primaryKeyValue);
 
         foreach(var property in properties)
@@ -720,7 +827,11 @@ public static class DruidCRUD
                 continue;
             
             if (IsForeignColumn(property))
+            {
+                var valuee = GetPrimaryKeyProperty(property.PropertyType).GetValue(property.GetValue(item));
+                command.Parameters.AddWithValue($"@{GetForeignKeyName(property)}", valuee);
                 continue;
+            }
             
             if (IsEnum(property))
                 continue;
@@ -728,7 +839,6 @@ public static class DruidCRUD
             var value = property.GetValue(item);
             command.Parameters.AddWithValue($"@{GetColumnName(property)}", value);
         }
-
         command.ExecuteNonQuery();
     }
 }

@@ -2,7 +2,7 @@ namespace DataLayer.Models;
 
 
 [DruidCRUD.TableName("artists")]
-public class Artist
+public class Artist : IModel
 {
     [DruidCRUD.PrimaryKey]
     public int? Id { get; set; }

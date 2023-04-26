@@ -1,7 +1,7 @@
 namespace DataLayer.Models;
 
 [DruidCRUD.TableName("users")]
-public class User
+public class User : IModel
 {
     [DruidCRUD.PrimaryKey]
     public int? Id { get; set; }
@@ -31,6 +31,15 @@ public class User
         Password = password;
         Address = address;
         IsAdmin = isAdmin;
+    }
+    public User() 
+    { 
+        FirstName = String.Empty;
+        LastName = String.Empty;
+        Email = String.Empty;
+        Password = String.Empty;
+        Address = String.Empty;
+        IsAdmin = false;
     }
 }
 

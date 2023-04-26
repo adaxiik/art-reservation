@@ -1,7 +1,7 @@
 namespace DataLayer.Models;
 
 [DruidCRUD.TableName("reservations")]
-public class Reservation
+public class Reservation : IModel
 {
     [DruidCRUD.PrimaryKey]
     public int? Id { get; set; }
@@ -11,6 +11,7 @@ public class Reservation
     public User User { get; set; }
     public DateTime DateFrom { get; set; }
     public DateTime DateTo { get; set; }
+    [DruidCRUD.Ignore]
     public double TotalPrice { get => (DateTo - DateFrom).Days * this.Artwork.PricePerDay; }
 
     public Reservation(int id, Artwork artWork, User user, DateTime dateFrom, DateTime dateTo)
@@ -28,5 +29,13 @@ public class Reservation
         this.User = user;
         this.DateFrom = dateFrom;
         this.DateTo = dateTo;
+    }
+
+    public Reservation()
+    {
+        this.Artwork = new Artwork();
+        this.User = new User();
+        this.DateFrom = DateTime.Now;
+        this.DateTo = DateTime.Now;
     }
 }
