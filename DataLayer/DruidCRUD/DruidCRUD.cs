@@ -125,7 +125,7 @@ public static class DruidCRUD
                        .Name ?? property.Name;
     }
 
-    static bool IsIgnored(PropertyInfo property)
+    public static bool IsIgnored(PropertyInfo property)
     {
         return property.GetCustomAttributes(false)
                        .OfType<IgnoreAttribute>()
@@ -174,7 +174,7 @@ public static class DruidCRUD
     }
 
 
-    static PropertyInfo GetPrimaryKeyProperty(Type type)
+    public static PropertyInfo GetPrimaryKeyProperty(Type type)
     {
         if (type.GetProperties().Where(IsPrimaryKey).Count() > 1)
             throw new Exception("Cannot have more than one primary key");

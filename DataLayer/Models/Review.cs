@@ -40,4 +40,9 @@ public class Review : IModel
         Rating = 0;
         Date = DateTime.Now;
     }
+
+    public override string ToString()
+    {
+        return $"Review rating {Rating} for {Artwork} by {User} on {Date}";
+    }
 }

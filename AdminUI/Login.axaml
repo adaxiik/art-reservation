@@ -2,27 +2,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
         x:Class="AdminUI.Login"
         Title="Art Reservation - Login"
         WindowStartupLocation="CenterScreen">
-  <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="400">
-  <DockPanel >
-    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,20">
-      <TextBlock Text="Login" FontSize="20" FontWeight="Bold" />
-      <TextBlock Text="Please enter your admin credentials" />
-      <TextBlock Foreground="Red" Name="ErrorMessage_" Text=" " Margin="0,10,0,0" />
-    </StackPanel>
-    <StackPanel DockPanel.Dock="Top" >
-      <TextBlock Text="Email" Padding="0,0,0,5" />
-      <TextBox Text="{Binding Email}" />
-      <TextBlock Text="Password" Padding="0,10,0,5" />
-      <TextBox PasswordChar="*" Text="{Binding Password}" />
-    </StackPanel>
-    <StackPanel DockPanel.Dock="Bottom" Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
-      <Button Content="Login" Click="LoginCommand" />
-      <!-- <Button Content="Register" /> -->
-    </StackPanel>
-    </DockPanel>
-  </Grid>
+    <Grid HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Width="400">
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Top"
+                        Margin="0,0,0,20">
+                <TextBlock Text="Login"
+                           FontSize="20"
+                           FontWeight="Bold" />
+                <TextBlock Text="Please enter your admin credentials" />
+                <TextBlock Foreground="Red"
+                           Name="ErrorMessage_"
+                           Text=" "
+                           Margin="0,10,0,0" />
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="Email"
+                           Padding="0,0,0,5" />
+                <TextBox Text="{Binding Email}" />
+                <TextBlock Text="Password"
+                           Padding="0,10,0,5" />
+                <TextBox PasswordChar="*"
+                         Text="{Binding Password}" />
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom"
+                        Margin="0,20,0,0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="10">
+                <Button Content="Login"
+                        Click="LoginCommand" />
+            </StackPanel>
+        </DockPanel>
+    </Grid>
 </Window>

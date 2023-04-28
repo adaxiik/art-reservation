@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -70,11 +72,14 @@ public class Manage<T> : ManageBase where T : class, new()
             {
                 var column = new DataGridTemplateColumn();
                 column.Header = property.Name;
-                column.CellTemplate = new FuncDataTemplate<object>((_, __) =>
+                column.CellTemplate = new FuncDataTemplate<object>((oo, __) =>
                 {
                     var button = new Button();
                     button.Content = "Open " + property.Name + "s";
-                    var manageWindow = (ManageBase)Activator.CreateInstance(typeof(Manage<>).MakeGenericType(property.PropertyType), this)!;
+
+                    var pk = DruidCRUD.GetPrimaryKeyProperty(property.PropertyType);
+                    var propertyValue = property.GetValue(oo);
+                    var manageWindow = (ManageBase)Activator.CreateInstance(typeof(Manage<>).MakeGenericType(property.PropertyType), this, (int)pk?.GetValue(propertyValue)!)!;
                     button.Click += (_, __) =>
                     {
                        manageWindow.Show();
@@ -96,6 +101,12 @@ public class Manage<T> : ManageBase where T : class, new()
         dataGrid.Items = items;
     }
 
+    public Manage(Window origin, int selected_id) : this(origin)
+    {
+        var dataGrid = this.FindControl<DataGrid>("DataGrid_");
+        dataGrid.SelectedItem = items.FirstOrDefault(x => (int)x?.GetType()?.GetProperty("Id")?.GetValue(x)! == selected_id);
+    }
+
     async void BackCommand(object? sender, RoutedEventArgs e)
     {
         if (deleted_items.Count > 0)
@@ -108,7 +119,14 @@ public class Manage<T> : ManageBase where T : class, new()
                 {
                     foreach (var item in deleted_items)
                     {
-                        connection.Delete(item);
+                        try
+                        {
+                            connection.Delete(item); // might be foreign key constraint
+                        }
+                        catch (Exception)
+                        {
+                            await MsgBox.MessageBox.Show(this, $"Cannot delete {item.GetType().Name} because it is referenced by other tables.", "Error", MsgBox.MessageBox.MessageBoxButtons.Ok);
+                        }
                     }
                 }
             }
@@ -122,9 +140,15 @@ public class Manage<T> : ManageBase where T : class, new()
         this.Close();
     }
 
-    void ExportCommand(object? sender, RoutedEventArgs e)
+    async void ExportCommand(object? sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        var dialog = new SaveFileDialog();
+        dialog?.Filters?.Add(new FileDialogFilter() { Name = "JSON", Extensions = { "json" } });
+        var result = await dialog?.ShowAsync(this)!;
+        if (result == null) return;
+
+        var json = JsonSerializer.Serialize(items);
+        await File.WriteAllTextAsync(result, json);
     }
 
     async void AddCommand(object? sender, RoutedEventArgs e)

@@ -31,12 +31,12 @@
                 <Button Content="Add"
                         Margin="10"
                         Name="Add_" />
-                <Button Content="Delete"
-                        Margin="10"
-                        Name="Delete_" />
                 <Button Content="Edit"
                         Margin="10"
                         Name="Edit_" />
+                <Button Content="Delete"
+                        Margin="10"
+                        Name="Delete_" />
             </StackPanel>
         </Grid>
     </DockPanel>

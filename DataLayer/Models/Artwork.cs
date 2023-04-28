@@ -71,6 +71,6 @@ public class Artwork : IModel
     
     public override string ToString()
     {
-        return $"{Title} by {Artist} - {Type}";
+        return $"{Title} - {Type}";
     }
 }

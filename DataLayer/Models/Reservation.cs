@@ -38,4 +38,9 @@ public class Reservation : IModel
         this.DateFrom = DateTime.Now;
         this.DateTo = DateTime.Now;
     }
+
+    public override string ToString()
+    {
+        return $"Reservation {Id} for {User} from {DateFrom} to {DateTo}";
+    }
 }

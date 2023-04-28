@@ -69,6 +69,8 @@ public class EditWindow<T> : EditWindowBase where T : class, new()
         {
             if (property.Name == "Id") continue;
 
+            if(DruidCRUD.IsIgnored(property)) continue;
+
             if(property.PropertyType.GetInterfaces().Contains(typeof(IModel)))
             {
                 var model_label = new TextBlock();
@@ -112,6 +114,23 @@ public class EditWindow<T> : EditWindowBase where T : class, new()
                 };
                 stackPanel.Children.Add(enum_dropdown);
                             
+                continue;
+            }
+
+            if (property.PropertyType == typeof(bool))
+            {
+                var bool_label = new CheckBox();
+                bool_label.Content = property.Name;
+                bool_label.IsChecked = (bool)property.GetValue(itemm)!;
+                bool_label.Checked += (sender, e) =>
+                {
+                    property.SetValue(itemm, true);
+                };
+                bool_label.Unchecked += (sender, e) =>
+                {
+                    property.SetValue(itemm, false);
+                };
+                stackPanel.Children.Add(bool_label);
                 continue;
             }
 

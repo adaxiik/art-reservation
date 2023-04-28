@@ -41,5 +41,10 @@ public class User : IModel
         Address = String.Empty;
         IsAdmin = false;
     }
+
+    public override string ToString()
+    {
+        return $"User {FirstName} {LastName} - {Email}";
+    }
 }
 
