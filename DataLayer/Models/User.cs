@@ -7,6 +7,8 @@ public class User : IModel
     public int? Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    [DruidCRUD.Ignore]
+    public string FullName => $"{FirstName} {LastName}";
     public string Email { get; set; }
     public string Password { get; set; }
     public string Address { get; set; }
@@ -46,5 +48,6 @@ public class User : IModel
     {
         return $"User {FirstName} {LastName} - {Email}";
     }
+
 }
 

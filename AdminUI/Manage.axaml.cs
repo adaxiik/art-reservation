@@ -162,6 +162,8 @@ public class Manage<T> : ManageBase where T : class, new()
         });
         await window.ShowDialog(this);
 
+        if (window.Cancelled) return;
+
         items.Add(new_item);
         var dataGrid = this.FindControl<DataGrid>("DataGrid_");
         dataGrid.Items = null;

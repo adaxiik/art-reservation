@@ -1,8 +1,21 @@
-﻿@{
+﻿@using DataLayer;
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if(!LoginManager.Instance.IsLoggedIn)
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>
+            <a href="@Url.Action("Login", "Account")">Login</a> or <a href="@Url.Action("Register", "Account")">Register</a> to continue.
+        </p>
+    </div>
+}
+else
+{
+    <script type="text/javascript">
+        window.location.href = '@Url.Action("Index", "ArtGallery")';
+    </script>
+}
+

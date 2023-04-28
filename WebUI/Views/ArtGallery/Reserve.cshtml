@@ -1,0 +1,58 @@
+@using DataLayer.Models
+@{
+    ViewBag.Title = "Art Reservation";
+    Artwork Artwork = ViewBag.artwork;
+    
+}
+@model ReservationViewModel
+<h2>Art Reservation - @Artwork.Title</h2>
+<form asp-action="Reserve" asp-controller="ArtGallery" method="post">
+    <p>
+        <label asp-for="DateFrom" class="control-label"></label>
+        <input asp-for="DateFrom" class="form-control" />
+        <span asp-validation-for="DateFrom" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="DateTo" class="control-label"></label>
+        <input asp-for="DateTo" class="form-control" />
+        <span asp-validation-for="DateTo" class="text-danger"></span>  
+    </p>
+    <p>
+        <label asp-for="CardNumber" class="control-label"></label><br>
+        <label>Only credit card number is required, because we believe you :)</label>
+        <input asp-for="CardNumber" class="form-control" />
+        <span asp-validation-for="CardNumber" class="text-danger"></span>
+    </p>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </br>
+    @* <input type="hidden" asp-for="ArtworkId" value="@Artwork.Id" /> *@
+
+    <p class="h2 text-success" id="TotalPrice"></p>
+    <input type="submit" value="Reserve" class="btn btn-primary" />
+</form>
+<script>
+    var dateFrom = document.getElementById("DateFrom");
+    var dateTo = document.getElementById("DateTo");
+    var totalDays = document.getElementById("TotalPrice");
+
+    function calculateTotalDays() {
+        var date1 = new Date(dateFrom.value);
+        var date2 = new Date(dateTo.value);
+        var timeDiff = date2.getTime() - date1.getTime();
+        if (isNaN(timeDiff)) {
+            totalDays.innerHTML = "";
+            return;
+        }
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        if (diffDays < 0) {
+            totalDays.innerHTML = "Invalid dates";
+            return;
+        }
+        var totalp = diffDays * @Artwork.PricePerDay;
+        totalDays.innerHTML = "Total price: " + totalp + "$";
+    }
+
+    dateFrom.addEventListener("change", calculateTotalDays);
+    dateTo.addEventListener("change", calculateTotalDays);
+    window.addEventListener("load", calculateTotalDays);
+</script> 

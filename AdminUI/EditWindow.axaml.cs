@@ -24,6 +24,7 @@ public class EditWindow<T> : EditWindowBase where T : class, new()
 {
     T item;
     public delegate void Command(T item);
+    public bool Cancelled = false;
 
     Command command;
     public EditWindow(T item, Command command)
@@ -87,6 +88,10 @@ public class EditWindow<T> : EditWindowBase where T : class, new()
                 model_dropdown.Items = available_models;
                 
                 model_dropdown.SelectedItem = available_models.FirstOrDefault(x => DruidCRUD.AreSame(x, property.GetValue(itemm)!));
+                if(model_dropdown.SelectedItem == null)
+                {
+                    model_dropdown.SelectedItem = available_models.FirstOrDefault();
+                }
                 model_dropdown.SelectionChanged += (sender, e) =>
                 {
                     property.SetValue(itemm, model_dropdown.SelectedItem);
@@ -156,6 +161,7 @@ public class EditWindow<T> : EditWindowBase where T : class, new()
 
     private void CancelCommand(object? sender, RoutedEventArgs e)
     {
+        Cancelled = true;
         this.Close();
     }
     

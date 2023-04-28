@@ -1,0 +1,86 @@
+@using DataLayer.Models
+@using DataLayer
+
+@{
+    ViewBag.Title = "Artwork Details";
+    Artwork Artwork = ViewBag.artwork;
+    List<Review> Reviews = ViewBag.reviews;
+    Reviews = Reviews.OrderByDescending(r => r.Date).ToList();
+}
+@model ReviewViewModel
+<h2>Artwork by <strong>@Artwork.Artist</strong></h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <img src="@Url.Content(Artwork.ImageUrl)" alt="Artwork Image" class="art-preview">
+    </div>
+    <div class="col-md-8">
+        <h3>@Artwork.Title</h3>
+        <p>@Artwork.Description</p>
+
+        <h2>Reserve this artwork</h2>
+        
+        @if(Artwork.IsAvailable)
+        {
+            <h5>Only for @Artwork.PricePerDay$ per day</h5>
+            <a href="@Url.Action("Reserve", "ArtGallery", new { id = Artwork.Id })" class="btn btn-primary">Reserve</a>
+        }   
+        else
+        {
+            <del><h5>Only for @Artwork.PricePerDay$ per day</h5></del>
+            <p class="text-danger">This artwork is not available</p>
+            <a href="#" class="btn btn-primary disabled">Reserve</a>
+        }
+
+    </div>
+
+    <div class="col-md-12 review-panel">
+        <h2 class="text-weight-bold">Create a review</h2>
+        <form asp-action="CreateReview" asp-controller="ArtGallery" method="post">
+            <p>
+                <label for="Rating">Rating</label>
+                <input asp-for="Rating" class="form-control" type="number" min="1" max="5" value="5">
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </p>
+            <p>
+                <label for="Comment">Comment</label>
+                <textarea asp-for="Comment" class="form-control"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </p>
+            <input type="hidden" asp-for="ArtworkId" value="@Artwork.Id" />
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    
+
+    <div class="col-md-12 review-panel">
+        <h2 class="text-weight-bold">Reviews</h2>
+        @if (Reviews.Count == 0)
+        {
+            <p>No reviews yet</p>
+        }
+        else
+        {
+            @foreach (Review review in Reviews)
+            {
+                <div class="row card review-item">
+                    <div class="col-md-12">
+                        <h4>@review.User.FullName - @review.Rating/5</h4>
+                        <p>@review.Date</p>
+                        <p>@review.Comment</p>
+                    </div>
+                    @if(review.User.Id == LoginManager.Instance.LoggedUser!.Id)
+                    {
+                        <div class="text-end col-md-12">
+                            <form asp-action="DeleteReview" asp-controller="ArtGallery" method="post">
+                                <input type="hidden" asp-for="ReviewId" value="@review.Id" />
+                                <input type="hidden" asp-for="ArtworkId" value="@Artwork.Id" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            }
+        }
+</div>
+

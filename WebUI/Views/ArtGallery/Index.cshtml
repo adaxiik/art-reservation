@@ -1,0 +1,21 @@
+@using DataLayer.Models
+@{
+    ViewBag.Title = "Gallery";
+    var Artworks = (List<Artwork>)ViewBag.Artworks;
+}
+
+<h2>Gallery</h2>
+<div class="flex-grid-thirds">
+    @foreach (Artwork artwork in Artworks)
+    {
+        <div class="artwork-item">
+            <a href="@Url.Action("Details", "ArtGallery", new { id = artwork.Id })">
+                <div class="artwork-title text-center text-weight-bold h2">@artwork.Title</div>
+                <div class="artwork-artist text-center">
+                    <span class="bi bi-person" aria-hidden="true"></span>
+                    @artwork.Artist
+                </div>
+            </a>
+        </div>
+    }
+</div>

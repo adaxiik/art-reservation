@@ -139,7 +139,7 @@ class Program
                     title: "David",
                     artist: connection.GetByProperty<Artist>("LastName", "Buonarroti").First(),
                     type: ArtworkType.Sculpture,
-                    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Michelangelo%27s_David_2015.jpg/480px-Michelangelo%27s_David_2015.jpg",
+                    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Michelangelo%27s_David_-_right_view_2.jpg/800px-Michelangelo%27s_David_-_right_view_2.jpg",
                     description: "David is a masterpiece of Renaissance sculpture created in marble by Italian artist Michelangelo. The statue represents the biblical hero David, who defeated the giant Goliath with a stone from his sling.",
                     pricePerDay: 125.0,
                     isAvailable: true,
@@ -149,7 +149,7 @@ class Program
                     title: "The Night Watch",
                     artist: connection.GetByProperty<Artist>("LastName", "van Rijn").First(),
                     type: ArtworkType.Painting,
-                    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Nachtwacht_Meister.jpg/1024px-Nachtwacht_Meister.jpg",
+                    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/The_Night_Watch_-_HD.jpg/716px-The_Night_Watch_-_HD.jpg",
                     description: "The Night Watch is a painting by Dutch artist Rembrandt. It is one of his most famous works and depicts a group portrait of a militia company. It is notable for its use of dramatic lighting and composition.",
                     pricePerDay: 85.0,
                     isAvailable: true,
@@ -159,7 +159,7 @@ class Program
                     title: "The Persistence of Memory",
                     artist: connection.GetByProperty<Artist>("LastName", "Dali").First(),
                     type: ArtworkType.Painting,
-                    imageUrl: "https://upload.wikimedia.org/wikipedia/en/9/93/The_Persistence_of_Memory.jpg",
+                    imageUrl: "https://upload.wikimedia.org/wikipedia/en/d/dd/The_Persistence_of_Memory.jpg",
                     description: "The Persistence of Memory is a painting by Spanish surrealist artist Salvador Dali. It is known for its surreal imagery, including melting watches and a distorted landscape.",
                     pricePerDay: 65.0,
                     isAvailable: true,
@@ -169,7 +169,7 @@ class Program
                     title: "Water Lilies",
                     artist: connection.GetByProperty<Artist>("LastName", "Monet").First(),
                     type: ArtworkType.Painting,
-                    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Monet_-_Water_Lilies_%281910%29.jpg/1024px-Monet_-_Water_Lilies_%281910%29.jpg",
+                    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9e/WLA_metmuseum_Water_Lilies_by_Claude_Monet.jpg",
                     description: "Water Lilies is a series of approximately 250 oil paintings by French impressionist artist Claude Monet. The paintings depict his flower garden at his home in Giverny, and are known for their use of light and color.",
                     pricePerDay: 90.0,
                     isAvailable: true,
@@ -213,7 +213,7 @@ class Program
                 DateTime dateFrom = DateTime.UtcNow.AddDays(rng.Next(30));
                 DateTime dateTo = dateFrom.AddDays(rng.Next(60));
 
-                Reservation reservation = new Reservation(artwork, user, dateFrom, dateTo);
+                Reservation reservation = new Reservation(artwork, user, dateFrom, dateTo, false);
                 artwork.IsAvailable = false;
                 connection.Update(artwork);
                 connection.Insert(reservation);

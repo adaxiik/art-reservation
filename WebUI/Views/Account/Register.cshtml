@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Register";
+}
+@model RegisterViewModel
+<h1 class="text-center">Register</h1>
+
+<form asp-action="Register" asp-controller="Account" method="post">
+    @Html.AntiForgeryToken()
+
+    <p>
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" placeholder="john.doe@mail.com" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </p>
+
+    <p>
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" placeholder="John" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </p>
+
+    <p>
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" placeholder="Doe" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </p>
+
+    <p>
+        <label asp-for="Password" class="control-label"></label>
+        <input asp-for="Password" class="form-control" autocomplete="off" placeholder="Password" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </p>
+
+    <p>
+        <label asp-for="ConfirmPassword" class="control-label"></label>
+        <input asp-for="ConfirmPassword" class="form-control" autocomplete="off" placeholder="Confirm Password" type="password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </p>
+
+    <p>
+        <label asp-for="Address" class="control-label"></label>
+        <input asp-for="Address" class="form-control" placeholder="Sweet Home 420" />
+    </p>
+
+    @if(!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <p class="text-danger" >@ViewBag.ErrorMessage</p>
+    }
+
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>

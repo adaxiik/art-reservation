@@ -11,24 +11,31 @@ public class Reservation : IModel
     public User User { get; set; }
     public DateTime DateFrom { get; set; }
     public DateTime DateTo { get; set; }
+    public bool Returned { get; set; }
     [DruidCRUD.Ignore]
     public double TotalPrice { get => (DateTo - DateFrom).Days * this.Artwork.PricePerDay; }
+    [DruidCRUD.Ignore]
+    public bool IsExpired { get => DateTime.Now > DateTo; }
+    [DruidCRUD.Ignore]
+    public int DaysLeft { get => (DateTo - DateTime.Now).Days; }
 
-    public Reservation(int id, Artwork artWork, User user, DateTime dateFrom, DateTime dateTo)
+    public Reservation(int id, Artwork artWork, User user, DateTime dateFrom, DateTime dateTo, bool returned)
     {
         this.Id = id;
         this.Artwork = artWork;
         this.User = user;
         this.DateFrom = dateFrom;
         this.DateTo = dateTo;
+        this.Returned = returned;
     }
 
-    public Reservation(Artwork artWork, User user, DateTime dateFrom, DateTime dateTo)
+    public Reservation(Artwork artWork, User user, DateTime dateFrom, DateTime dateTo, bool returned)
     {
         this.Artwork = artWork;
         this.User = user;
         this.DateFrom = dateFrom;
         this.DateTo = dateTo;
+        this.Returned = returned;
     }
 
     public Reservation()

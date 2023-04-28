@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Login";
+}
+@model LoginViewModel
+<h1 class="text-center">Login</h1>
+
+<form asp-action="Login" asp-controller="Account" method="post">
+    @Html.AntiForgeryToken()
+    <p>
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" placeholder="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Password" class="control-label"></label>
+        <input asp-for="Password" class="form-control" autocomplete="off" placeholder="Password" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </p>
+
+    @if(!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <p class="text-danger" >@ViewBag.ErrorMessage</p>
+    }
+
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>

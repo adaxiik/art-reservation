@@ -1,0 +1,71 @@
+@using DataLayer.Models;
+@{
+    ViewData["Title"] = "My Reservations";
+    List<Reservation> Reservations = (List<Reservation>)ViewBag.reservations;
+    Reservations = Reservations.OrderBy(x => x.Id == 1).Reverse().ToList();
+}
+
+<h1>My Reservations</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Reservation Id</th>
+            <th>Artwork title</th>
+            <th>Reservation End</th>
+            <th>Remaining days</th>
+            <th>Expired</th>
+            <th>Returned</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Reservation item in Reservations)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @* @item.Artwork.Title *@
+                    <a asp-controller="ArtGallery" asp-action="Details" asp-route-id="@item.Artwork.Id">@item.Artwork.Title</a>
+                </td>
+                <td>
+                    @item.DateTo.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @item.DaysLeft
+                </td>
+                <td>
+                    @if(item.IsExpired)
+                    {
+                        <span class="text-danger">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="text-success">No</span>
+                    }
+                </td>
+                <td>
+                    @if (item.Returned)
+                    {
+                        <span class="text-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">No</span>
+                    }
+                </td>
+                <td>
+                    @if (!item.IsExpired && !item.Returned)
+                    {
+                        <form asp-controller="ArtGallery" asp-action="ReturnArtwork" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-primary">Return</button>
+                        </form>
+                    }
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -484,7 +484,6 @@ public static class DruidCRUD
         sb.Remove(sb.Length - 2, 2);
         sb.Append($" FROM {tableName} WHERE {GetForeignKeyName(myProperty)} = @Id;");
 
-        Console.WriteLine(sb.ToString());
 
         var command = connection.CreateCommand(sb.ToString());
         command.Parameters.AddWithValue("@Id", foreignKeyValue);

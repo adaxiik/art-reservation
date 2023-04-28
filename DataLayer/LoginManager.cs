@@ -1,8 +1,7 @@
 ﻿using System;
-using DataLayer;
 using DataLayer.Models;
 
-namespace AdminUI;
+namespace DataLayer;
 public class LoginManager
 {   
     private static LoginManager? instance;

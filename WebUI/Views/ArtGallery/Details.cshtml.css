@@ -1,0 +1,23 @@
+.art-preview {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px #ccc;
+    cursor: pointer;
+}
+
+.review-panel
+{
+    margin-top: 2em;
+}
+
+.review-item
+{
+    margin-bottom: 1em;
+    padding: 1em;
+    
+}
