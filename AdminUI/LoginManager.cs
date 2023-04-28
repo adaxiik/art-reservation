@@ -50,7 +50,7 @@ public class LoginManager
 
             User user = users[0];
 
-            if (user.Password != password)
+            if (user.Password != DruidCRUD.ToMD5(password))
             {
                 ErrorMessage = "Incorrect password";
                 return false;

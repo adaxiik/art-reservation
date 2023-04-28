@@ -9,7 +9,7 @@ public class User : IModel
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public string? Address { get; set; }
+    public string Address { get; set; }
     public bool IsAdmin { get; set; }
 
     public User(int id, string firstName, string lastName, string email, string password, string? address, bool isAdmin)
@@ -19,7 +19,7 @@ public class User : IModel
         LastName = lastName;
         Email = email;
         Password = password;
-        Address = address;
+        Address = address ?? String.Empty;
         IsAdmin = isAdmin;
     }
 
@@ -29,7 +29,7 @@ public class User : IModel
         LastName = lastName;
         Email = email;
         Password = password;
-        Address = address;
+        Address = address ?? String.Empty;
         IsAdmin = isAdmin;
     }
     public User() 

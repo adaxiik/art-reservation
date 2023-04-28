@@ -160,7 +160,16 @@ public static class DruidCRUD
     {
         return property.PropertyType.IsEnum;
     }
-
+    public static string ToMD5(string input)
+    {
+        using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+        {
+            byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+            byte[] hashBytes = md5.ComputeHash(inputBytes);
+            return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+        }
+    }
+    
     static string GetForeignKeyName(PropertyInfo property)
     {
         var foreignKeyProperty = GetPrimaryKeyProperty(property.PropertyType);
@@ -364,7 +373,6 @@ public static class DruidCRUD
             command.Parameters.AddWithValue($"@{paramIndex}", property.GetValue(item));
             paramIndex++;
         }
-
         command.ExecuteNonQuery();
 
         var primaryKeyProperty = GetPrimaryKeyProperty(type);

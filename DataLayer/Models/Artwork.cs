@@ -10,8 +10,8 @@ public class Artwork : IModel
     public Artist Artist { get; set; }
 
     public ArtworkType Type { get; set; }
-    public string? ImageUrl { get; set; }
-    public string? Description { get; set; }
+    public string ImageUrl { get; set; }
+    public string Description { get; set; }
     public double PricePerDay { get; set; }
     public bool IsAvailable { get; set; }
     public DateTime DateCreated { get; set; }
@@ -31,8 +31,8 @@ public class Artwork : IModel
         Title = title;
         Artist = artist;
         Type = type;
-        ImageUrl = imageUrl;
-        Description = description;
+        ImageUrl = imageUrl ?? String.Empty;
+        Description = description ?? String.Empty;
         PricePerDay = pricePerDay;
         IsAvailable = isAvailable;
         DateCreated = dateCreated;
@@ -50,8 +50,8 @@ public class Artwork : IModel
         Title = title;
         Artist = artist;
         Type = type;
-        ImageUrl = imageUrl;
-        Description = description;
+        ImageUrl = imageUrl ?? String.Empty;
+        Description = description ?? String.Empty;
         PricePerDay = pricePerDay;
         IsAvailable = isAvailable;
         DateCreated = dateCreated;

@@ -15,9 +15,6 @@ public partial class Login : Window
         InitializeComponent();
         this.DataContext = this;
         ErrorMessage = this.FindControl<TextBlock>("ErrorMessage_");
-
-        // Email = "t@t.cz";
-        // Password = "aa";
     }
 
     public string Email { get; set; } = String.Empty;
@@ -27,8 +24,6 @@ public partial class Login : Window
 
     public void LoginCommand(object sender, RoutedEventArgs e)
     {
-        Email = "t@t.cz";
-        Password = "aa";
         LoginManager.Instance.Login(Email, Password, out string ErrorMess);
         if (LoginManager.Instance.IsLoggedIn)
         {
