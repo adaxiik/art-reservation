@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebUI.Models;
 using DataLayer.Models;
 using DataLayer;
-
+using System.Text.RegularExpressions;
 
 namespace WebUI.Controllers;
 
@@ -55,7 +55,14 @@ public class AccountController : Controller
 
         if(model.Password.Length < 3)
         {
-            ViewBag.ErrorMessage = "Password must be at least 3 characters";
+            ModelState.AddModelError("Password", "Password must be at least 3 characters");
+            return View(model);
+        }
+
+        Regex mailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);
+        if(!mailRegex.IsMatch(model.Email!))
+        {
+            ModelState.AddModelError("Email", "Invalid email");
             return View(model);
         }
 
@@ -65,7 +72,7 @@ public class AccountController : Controller
 
             if(same_email.Count > 0)
             {
-                ViewBag.ErrorMessage = "Email already in use";
+                ModelState.AddModelError("Email", "Email already in use");
                 return View(model);
             }
 
