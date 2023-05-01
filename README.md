@@ -14,6 +14,8 @@ or
 ```sh
 $ dotnet run --project WebUI
 ```
+#### Note
+- You may want to change database path [here](DataLayer/GlobalConfig.cs)
 
 ## Project goals
 - [x] Hand made ORM
